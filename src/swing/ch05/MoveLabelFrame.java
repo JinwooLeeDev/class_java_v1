@@ -16,6 +16,12 @@ public class MoveLabelFrame extends JFrame {
     ArrayList<JLabel> list = new ArrayList<>();
     private Timer generateTimer;
     private Timer moveTimer;
+    private Timer effectTimer;
+    private int life = 3;
+    private JLabel lifelabel;
+    private int score = 0;
+    private JLabel scorelabel;
+    private JLabel getDamage;
 
     public MoveLabelFrame() {
         initData();
@@ -31,23 +37,54 @@ public class MoveLabelFrame extends JFrame {
         moveTimer.start();
     }
 
+    private void showEffect() {
+        add(getDamage);
+        effectTimer = new Timer(2000, e -> remove(getDamage));
+        effectTimer.start();
+    }
+
     private void moveGeneratedLabels() {
         for (int i = list.size() - 1; i >= 0; i--) {
             JLabel generatedLabel = list.get(i);
             // 기존 x좌표는 유지하고 y좌표만 증가
             generatedLabel.setLocation(generatedLabel.getX(), generatedLabel.getY() + 3);
+
+            if (isCollision(generatedLabel)) {
+                System.out.println("충돌 !");
+                remove(generatedLabel);
+                showEffect();
+                list.remove(i);
+                life--;
+                lifelabel.setText("생명력 : " + life);
+            }
+
+            if (generatedLabel.getY() >= 500) {
+                list.remove(i);
+                score++;
+                scorelabel.setText("점수 : " + score);
+            }
+
         }
     }
 
+
     private void generateAdd() {
         JLabel generatedLabel = new JLabel("▼");
-        generatedLabel.setSize(100, 100);
+        generatedLabel.setSize(30, 30);
+        generatedLabel.setFont(new Font("맑은 고딕", Font.BOLD, 30));
         int randomX = random.nextInt(500);
         // 무작위 가로위치 + y좌표는 0에 배치
         generatedLabel.setLocation(randomX, 0);
         // 리스트와 화면에 추가
         list.add(generatedLabel);
         add(generatedLabel);
+    }
+
+    private boolean isCollision(JLabel generatedLabel) {    // 충돌 검사용 메서드
+        Rectangle playerBounds = label.getBounds();
+        Rectangle generatedBounds = generatedLabel.getBounds();
+
+        return playerBounds.intersects(generatedBounds);
     }
 
     private void renameTitle() {
@@ -63,13 +100,28 @@ public class MoveLabelFrame extends JFrame {
         label = new JLabel("★");
         label.setFont(new Font("맑은 고딕", Font.BOLD, 30));
         // 좌표 기반 - 컴포넌트의 크기와 위치를 직접 설정해야함
-        label.setSize(50, 50);   // 사이즈
+        label.setSize(30, 30);   // 사이즈
         label.setLocation(250, 250);// 시작위치
+
+        lifelabel = new JLabel("생명력 : " + life);
+        lifelabel.setSize(200, 50);
+        lifelabel.setLocation(10, 10);
+
+        scorelabel = new JLabel("점수 : " + score);
+        scorelabel.setSize(200, 50);
+        scorelabel.setLocation(10, 400);
+
+        ImageIcon showGetDamage = new ImageIcon("images/getDamage.png");
+        getDamage = new JLabel(showGetDamage);
+        getDamage.setSize(500,500);
+        getDamage.setLocation(0,0);
     }
 
     private void setInitLayout() {
         setLayout(null);    // null --> 좌표 기반
         add(label);
+        add(lifelabel);
+        add(scorelabel);
         setVisible(true);
         label.setFocusable(true);
         label.requestFocusInWindow();
