@@ -39,8 +39,13 @@ public class MoveLabelFrame extends JFrame {
 
     private void showEffect() {
         add(getDamage);
-        effectTimer = new Timer(2000, e -> remove(getDamage));
+
+        effectTimer = new Timer(1000, e -> remove(getDamage));
+        Timer effectRemoveTimer = new Timer(1050, e -> repaint());
         effectTimer.start();
+        effectRemoveTimer.start();
+
+        repaint();
     }
 
     private void moveGeneratedLabels() {
@@ -111,7 +116,7 @@ public class MoveLabelFrame extends JFrame {
         scorelabel.setSize(200, 50);
         scorelabel.setLocation(10, 400);
 
-        ImageIcon showGetDamage = new ImageIcon("images/getDamage.png");
+        ImageIcon showGetDamage = new ImageIcon("C:\\ljw\\workspace\\class_java_v1\\images\\getDamage.png");
         getDamage = new JLabel(showGetDamage);
         getDamage.setSize(500,500);
         getDamage.setLocation(0,0);
