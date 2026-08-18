@@ -110,8 +110,6 @@ public class FileServer {
             // 클라이언트 출력 방향만 닫았고 입력 방향은 살아 있으므로 서버가 보낸 응답을 정상적으로 받을 수 있다.
             out.write(("업로드 성공 : " + fileName).getBytes());
             out.flush(); // 통로에 남은 데이터를 다 밀어낸다.
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
