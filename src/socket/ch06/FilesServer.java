@@ -102,7 +102,6 @@ public class FilesServer {
                     }
                 }).start();
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
