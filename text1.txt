@@ -1,3 +1,1 @@
-안녕반가워
-
-오늘의 Todo List
+Maven repository 가서 롬북이랑 GSON 다운받아서 lib 폴더에 넣기
